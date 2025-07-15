@@ -1,0 +1,21 @@
+{
+  "name": "Supermarket Recipe Builder",
+  "version": "1.0",
+  "description": "A Chrome extension to build and save recipes for easy re-use when ordering from supermarkets.",
+  "manifest_version": 3,
+  "content_scripts": [
+    {
+      "matches": ["https://*/*"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": "recipes_default_icon.png"
+  },
+  "background": {
+    "service_worker": "sw.js"
+  },
+  "permissions": ["storage", "activeTab", "scripting", "tabs"]
+}

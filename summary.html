@@ -1,0 +1,41 @@
+<!-- summary.html -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Recipe Summary</title>
+    <link rel="stylesheet" href="summary.css" />
+  </head>
+  <body>
+    <div id="container">
+      <!-- Recipe Title -->
+      <header>
+        <h1 id="recipeName">My Recipe Name</h1>
+        <button id="editNameBtn">✎ Edit Name</button>
+      </header>
+
+      <!-- Ingredient List -->
+      <section id="ingredientsSection">
+        <h2>Ingredients</h2>
+        <ul id="ingredientList">
+          <!--
+        Example placeholder item—your JS will clone/link these:
+        <li data-sku="123">
+          <span class="ingredientName">Flour</span>
+          <input type="number" class="qtyInput" value="2" min="1">
+          <button class="deleteBtn">✕</button>
+        </li>
+        --></ul>
+      </section>
+
+      <!-- Actions -->
+      <footer>
+        <button id="saveRecipeBtn">Save Changes</button>
+        <button id="viewAllBtn">View All Recipes</button>
+      </footer>
+    </div>
+
+    <!-- your summary.js will handle editing, deletion, storage, etc. -->
+    <script src="summary.js" defer></script>
+  </body>
+</html>
