@@ -5,39 +5,34 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.type === "startRecipe") {
     sendResponse({ status: "started" });
 
-    // If overlay already exists, just update it
+    /* 1‑A ▸ ENABLE rule right away */
+    chrome.runtime.sendMessage({ type: "RECIPE_MODE", enabled: true });
+
+    // ─── overlay code unchanged ───
     if (overlay) {
       overlay.remove();
-      overlay = null; // Clear the reference to allow re-creation
+      overlay = null;
     }
-    // Create the overlay
     overlay = document.createElement("div");
     overlay.id = "recOverlay";
     overlay.style.cssText = `
-        position: fixed; top: 0; left: 0;
-        width: 100%; padding: 12px;
-        background: rgba(0,0,0,0.8); color: #fff;
-        font-family: sans-serif; font-size: 16px;
-        text-align: center; z-index: 999999;
-      `;
+      position: fixed; top: 0; left: 0; width: 100%; padding: 12px;
+      background: rgba(0,0,0,0.8); color: #fff; font-size: 16px;
+      text-align: center; z-index: 999999;
+    `;
     overlay.innerHTML = `
-        <span style="margin-right: 16px;">● Recording Recipe ${message.recipeName}</span>
-        <button id="stopRec" style="
-          padding: 6px 12px;
-          font-size: 14px;
-          cursor: pointer;
-        ">Finished</button>
-      `;
+      <span style="margin-right:16px;">● Recording Recipe ${message.recipeName}</span>
+      <button id="stopRec" style="padding:6px 12px; font-size:14px; cursor:pointer;">
+        Finished
+      </button>
+    `;
     document.body.appendChild(overlay);
 
-    // “Finished” button
+    /* 1‑B ▸ DISABLE rule when user clicks “Finished” */
     overlay.querySelector("#stopRec").addEventListener("click", () => {
-      // tell background to clear badge
-      chrome.runtime.sendMessage({ type: "stopRecording" });
-      //message sw.js to open summary page
-      chrome.runtime.sendMessage({ type: "openSummaryPage" });
+      chrome.runtime.sendMessage({ type: "RECIPE_MODE", enabled: false });
       overlay.remove();
-      overlay = null; // Clear the reference to allow re-creation
+      overlay = null;
     });
   }
 });

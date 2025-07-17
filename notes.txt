@@ -1,0 +1,17 @@
+Add items in Sainsburys:
+
+Method: POST
+
+Endpoint: https://www.sainsburys.co.uk/groceries-api/gol-services/basket/v2/basket/item?pick_time=2025-07-18T19%3A44%3A22Z&store_number=2254&slot_booked=false
+
+Body: {product_uid: "7508829", quantity: 1, uom: "ea", selected_catchweight: ""}
+    -- catchweight seems to be for things like picking the weight of pork loin, with "320g-460g" being an example.
+
+Add additional of the same item (so, 2nd or 3rd of something):
+
+Method: PUT
+
+Endpoint: https://www.sainsburys.co.uk/groceries-api/gol-services/basket/v2/basket?pick_time=2025-07-18T19%3A39%3A01Z&store_number=2254&slot_booked=false
+
+Body: {items: [{product_uid: "478052", quantity: 2, uom: "ea", selected_catchweight: "", item_uid: "25500515247"}]}
+    -- When an additional item is added, it then adds a item_uid, which is 

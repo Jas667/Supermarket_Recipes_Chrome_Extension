@@ -1,0 +1,12 @@
+[
+  {
+    "id": 1,
+    "priority": 1,
+    "action": { "type": "block" },
+    "condition": {
+      "urlFilter": "*://www.sainsburys.co.uk/groceries-api/gol-services/basket/v2/basket/item*",
+      "resourceTypes": ["xmlhttprequest"],
+      "requestMethods": ["post", "put"]
+    }
+  }
+]

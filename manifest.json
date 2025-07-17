@@ -17,5 +17,18 @@
   "background": {
     "service_worker": "sw.js"
   },
-  "permissions": ["storage", "activeTab", "scripting", "tabs"]
+  "permissions": [
+    "storage",
+    "activeTab",
+    "scripting",
+    "tabs",
+    "declarativeNetRequest"
+  ],
+  "host_permissions": ["https://www.sainsburys.co.uk/*"],
+
+  "declarative_net_request": {
+    "rule_resources": [
+      { "id": "static_rules", "enabled": false, "path": "rules.json" }
+    ]
+  }
 }
