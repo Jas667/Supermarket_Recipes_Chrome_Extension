@@ -1,6 +1,14 @@
 "use strict";
 let overlay;
 
+//Function to end new recipe recording and remove overlay
+function endRecipe() {
+  chrome.runtime.sendMessage({ type: "RECIPE_MODE", enabled: false });
+  chrome.runtime.sendMessage({ type: "removeNewRecipe" });
+  overlay.remove();
+  overlay = null;
+}
+
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.type === "startRecipe") {
     sendResponse({ status: "started" });
@@ -25,14 +33,16 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       <button id="stopRec" style="padding:6px 12px; font-size:14px; cursor:pointer;">
         Finished
       </button>
+      <button id="cancelRec" style="padding:6px 12px; font-size:14px; cursor:pointer;">
+        Cancel
+      </button>
     `;
     document.body.appendChild(overlay);
 
     /* 1‑B ▸ DISABLE rule when user clicks “Finished” */
-    overlay.querySelector("#stopRec").addEventListener("click", () => {
-      chrome.runtime.sendMessage({ type: "RECIPE_MODE", enabled: false });
-      overlay.remove();
-      overlay = null;
-    });
+    overlay.querySelector("#stopRec").addEventListener("click", endRecipe);
+
+    /* 1‑C ▸ DISABLE rule when user clicks “Cancel” */
+    overlay.querySelector("#cancelRec").addEventListener("click", endRecipe);
   }
 });

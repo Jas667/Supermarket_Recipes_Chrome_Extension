@@ -15,7 +15,8 @@
     "default_icon": "recipes_default_icon.png"
   },
   "background": {
-    "service_worker": "sw.js"
+    "service_worker": "sw.js",
+    "type": "module"
   },
   "permissions": [
     "storage",
