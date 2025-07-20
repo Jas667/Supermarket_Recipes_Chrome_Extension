@@ -7,7 +7,10 @@ function endRecipe() {
   chrome.runtime.sendMessage({ type: "removeNewRecipe" });
   overlay.remove();
   overlay = null;
-}
+};
+
+
+
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.type === "startRecipe") {
@@ -46,3 +49,6 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     overlay.querySelector("#cancelRec").addEventListener("click", endRecipe);
   }
 });
+
+
+

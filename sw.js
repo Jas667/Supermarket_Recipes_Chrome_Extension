@@ -1,3 +1,5 @@
+'use strict';
+
 import { startNewRecipe, removeNewRecipe } from "./storage.js";
 
 const RULE_ID = 9001;
@@ -77,3 +79,28 @@ async function disableRule() {
     removeRuleIds: [RULE_ID],
   });
 }
+
+//Sainsburys Specific Sniffing
+chrome.webRequest.onBeforeRequest.addListener(
+  details => {
+    if (details.requestBody?.raw?.length) {
+      const bytes = details.requestBody.raw[0].bytes;
+      const text = new TextDecoder().decode(new Uint8Array(bytes));
+      try {
+        const data = JSON.parse(text);
+        console.log("🛒 Captured payload:", data);
+        // Save or forward data as needed...
+      } catch (e) {
+        console.warn("Failed to parse basket payload:", e);
+      }
+    }
+  },
+  {
+    urls: [
+      "*://www.sainsburys.co.uk/groceries-api/gol-services/basket/v2/basket/item*"
+    ],
+    types: ["xmlhttprequest"]
+  },
+  ["requestBody"]
+);
+

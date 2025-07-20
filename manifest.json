@@ -23,7 +23,8 @@
     "activeTab",
     "scripting",
     "tabs",
-    "declarativeNetRequest"
+    "declarativeNetRequest",
+    "webRequest"
   ],
   "host_permissions": ["https://www.sainsburys.co.uk/*"],
 

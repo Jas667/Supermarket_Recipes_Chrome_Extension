@@ -15,3 +15,12 @@ Endpoint: https://www.sainsburys.co.uk/groceries-api/gol-services/basket/v2/bask
 
 Body: {items: [{product_uid: "478052", quantity: 2, uom: "ea", selected_catchweight: "", item_uid: "25500515247"}]}
     -- When an additional item is added, it then adds a item_uid, which is 
+
+
+
+    Example - {
+  "product_uid": "8054599",
+  "quantity": 1,
+  "uom": "ea",
+  "selected_catchweight": ""
+}
