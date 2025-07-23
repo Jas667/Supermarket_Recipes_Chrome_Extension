@@ -54,8 +54,8 @@ newRecipeButton.addEventListener("click", async () => {
     type: "startNewRecipe",
     recipeName: recipeName,
   });
-  
-  if(!storageResponse.success) {
+
+  if (!storageResponse.success) {
     //Handle the error with a warning. We then need to close the overlay
     console.error("Failed to save new recipe:", storageResponse.error);
     warningNoRecipeName();
@@ -74,3 +74,42 @@ document.getElementById("viewRecipesButton").addEventListener("click", () => {
   //open summary.html in a new tab
   chrome.tabs.create({ url: "summary.html" });
 });
+
+//Testing button to add an item to the Sainsbury's basket
+// popup.js
+document.getElementById("addItem").addEventListener("click", () => {
+  chrome.runtime.sendMessage({
+    type: "startRecipeAdd",
+    url: "https://www.sainsburys.co.uk/gol-ui/product/sainsburys-pork-sausages-taste-the-difference-x10-667g",
+  });
+});
+
+// chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+//   const tab = tabs[0];
+//   if (!tab?.id) return;
+
+//   chrome.scripting.executeScript({
+//     target: { tabId: tab.id },
+//     world: "MAIN", // <-- belongs at the top level, not inside `target`
+//     func: () => {
+//       fetch(
+//         "https://www.sainsburys.co.uk/groceries-api/gol-services/basket/v2/basket/item?store_number=2254",
+//         {
+//           method: "POST",
+//           headers: {
+//             "Content-Type": "application/json",
+//           },
+//           body: JSON.stringify({
+//             product_uid: "8123910",
+//             quantity: 1,
+//             uom: "ea",
+//             selected_catchweight: "",
+//           }),
+//         }
+//       )
+//         .then((res) => res.json())
+//         .then((data) => console.log("✅ Basket Add Response:", data))
+//         .catch((err) => console.error("❌ Error:", err));
+//     },
+//   });
+// });
