@@ -5,7 +5,7 @@
   "manifest_version": 3,
   "content_scripts": [
     {
-      "matches": ["https://*/*"],
+      "matches": ["https://*.sainsburys.co.uk/*"],
       "js": ["content.js"],
       "run_at": "document_idle"
     }
@@ -27,7 +27,7 @@
     "webRequest",
     "webNavigation"
   ],
-  "host_permissions": ["https://www.sainsburys.co.uk/*"],
+  "host_permissions": ["https://*.sainsburys.co.uk/*"],
 
   "declarative_net_request": {
     "rule_resources": [
