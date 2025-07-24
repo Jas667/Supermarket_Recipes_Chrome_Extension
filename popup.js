@@ -80,7 +80,6 @@ document.getElementById("viewRecipesButton").addEventListener("click", () => {
 document.getElementById("addItem").addEventListener("click", () => {
   chrome.runtime.sendMessage({
     type: "startRecipeAdd",
-    url: "https://www.sainsburys.co.uk/gol-ui/product/sainsburys-pork-sausages-taste-the-difference-x10-667g",
   });
 });
 
