@@ -12,6 +12,17 @@ export async function startNewRecipe(recipeName) {
   });
 }
 
+export async function getNewRecipe() {
+  const data = await chrome.storage.local.get(NEW_RECIPE_STORAGE_KEY);
+  return data[NEW_RECIPE_STORAGE_KEY];
+}
+
+export async function updateNewRecipe(recipeData) {
+  await chrome.storage.local.set({
+    [NEW_RECIPE_STORAGE_KEY]: { ...recipeData },
+  });
+}
+
 export async function removeNewRecipe() {
   await chrome.storage.local.remove(NEW_RECIPE_STORAGE_KEY);
 }

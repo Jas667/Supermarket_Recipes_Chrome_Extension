@@ -6,6 +6,8 @@ import {
   getWCAuthtoken,
   setBearerToken,
   setWCAuthtoken,
+  getNewRecipe,
+  updateNewRecipe,
 } from "./storage.js";
 import {
   sainsburysUrlFilter,
@@ -96,13 +98,37 @@ async function disableRule(RULE_ID) {
 }
 
 //Sainsburys Specific Sniffing
-function registerAddToBasket(details) {
+async function registerAddToBasket(details) {
   if (details.requestBody?.raw?.length) {
     const buf = details.requestBody.raw[0].bytes;
     const text = new TextDecoder().decode(new Uint8Array(buf));
     try {
       const data = JSON.parse(text);
-      console.log("🛒 Captured Sainsbury's item:", data);
+      const product_uid = data.product_uid;
+      const selected_catchweight = data.selected_catchweight;
+      const uom = data.uom;
+
+      const recipeData = await getNewRecipe();
+
+      if (!recipeData) {
+        console.warn("No recipe data found in storage.");
+        return;
+      }
+
+      // Update the recipe data with the new item. First check if the item already exists
+      if (recipeData.items[product_uid]) {
+        // If it exists, increment the quantity
+        recipeData.items[product_uid].quantity += 1;
+        await updateNewRecipe(recipeData);
+      } else {
+        await getItemDetails(product_uid);
+        recipeData.items[product_uid] = {
+          quantity: 1,
+          selected_catchweight,
+          uom,
+        };
+        await updateNewRecipe(recipeData);
+      }
     } catch (e) {
       console.warn("❗ parse failed:", e);
     }
@@ -216,6 +242,45 @@ async function addSingleTestItem() {
     uom: "ea",
     selected_catchweight: "",
   });
+}
+
+//Function to get further item details
+// async function getItemDetails(product_uid) {
+//   await chrome.scripting.executeScript({
+//     target: { tabId },
+//     world: "MAIN", // <-- real page context
+//     func: () => {
+//       fetch(
+//         `https://www.sainsburys.co.uk//groceries-api/gol-services/product/v1/product?uids=${product_uid}`,
+//         {
+//           method: "GET",
+//           credentials: "include",
+//           headers: {
+//             "Content-Type": "application/json",
+//           },
+//         }
+//       )
+//         .then((r) => r.json())
+//         .then((res) => console.log("Item details", res))
+//         .catch((err) => console.error("Failed to retrieve item details", err));
+//     },
+//   });
+// }
+
+async function getItemDetails(product_uid) {
+  fetch(
+    `https://www.sainsburys.co.uk//groceries-api/gol-services/product/v1/product?uids=${product_uid}`,
+    {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  )
+    .then((r) => r.json())
+    .then((res) => console.log("Item details", res))
+    .catch((err) => console.error("Failed to retrieve item details", err));
 }
 
 //This was after if recipe add check

@@ -24,3 +24,28 @@ Body: {items: [{product_uid: "478052", quantity: 2, uom: "ea", selected_catchwei
   "uom": "ea",
   "selected_catchweight": ""
 }
+
+
+--------------------
+
+When getting item details:
+
+- products: [{}]
+- retail_price: {}
+- promotions: [{}]
+
+Name:
+  procucts -> Name
+
+URL:
+  products -> full_url
+
+If Nectar Prices:
+  Current price is in:
+      products -> retail_price -> price
+  Original price is in:
+      products -> promotions -> original_price
+
+If not nectar prices:
+  Current price is in:
+    products -> retail_price -> price
